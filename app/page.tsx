@@ -1,3 +1,5 @@
+'use client'
+
 export default function Home() {
   return (
     <>
@@ -21,7 +23,7 @@ export default function Home() {
             and blogs into personalized itineraries — powered by LangChain,
             LangGraph, and Google Maps.
           </p>
-          <form className="notify-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="notify-form" action="https://formspree.io/f/xqevqryo" method="POST">
             <input type="email" placeholder="your@email.com" className="email-input" />
             <button type="submit" className="notify-btn">Notify me</button>
           </form>
