@@ -1,6 +1,31 @@
 'use client'
 
+import { useState } from 'react'
+
 export default function Home() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setStatus('submitting')
+    try {
+      const res = await fetch('https://formspree.io/f/xqevqryo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       <div className="page">
@@ -19,14 +44,35 @@ export default function Home() {
           <div className="wordmark">Route<span>Genie</span></div>
           <h1 className="headline">Something smart<br /><em>is on its way.</em></h1>
           <p className="sub">
-            An AI travel planner that turns YouTube Videos, Instagram Reels,
+            An AI travel planner that turns YouTube videos, Instagram Reels,
             and blogs into personalized itineraries — powered by LangChain,
             LangGraph, and Google Maps.
           </p>
-          <form className="notify-form" action="https://formspree.io/f/xqevqryo" method="POST">
-            <input type="email" placeholder="your@email.com" className="email-input" />
-            <button type="submit" className="notify-btn">Notify me</button>
-          </form>
+
+          {status === 'success' ? (
+            <div className="success-msg">
+              ✓ You&apos;re on the list! We&apos;ll let you know when we launch.
+            </div>
+          ) : (
+            <form className="notify-form" onSubmit={handleSubmit}>
+              <input
+                type="email"
+                name="email"
+                className="email-input"
+                placeholder="your@email.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+              {status === 'error' && (
+                <p className="field-error">Something went wrong — please try again.</p>
+              )}
+              <button type="submit" className="notify-btn" disabled={status === 'submitting'}>
+                {status === 'submitting' ? 'Sending…' : 'Notify me'}
+              </button>
+            </form>
+          )}
+
           <div className="stack">
             {['Python', 'LangChain', 'LangGraph', 'RAG', 'Google Maps'].map(t => (
               <span key={t} className="pill">{t}</span>
