@@ -19,7 +19,7 @@ export default function Home() {
           <div className="wordmark">Route<span>Genie</span></div>
           <h1 className="headline">Something smart<br /><em>is on its way.</em></h1>
           <p className="sub">
-            An AI travel planner that turns YouTube videos, Instagram Reels,
+            An AI travel planner that turns YouTube Videos, Instagram Reels,
             and blogs into personalized itineraries — powered by LangChain,
             LangGraph, and Google Maps.
           </p>
